@@ -158,13 +158,13 @@ class TimePlot(QtWidgets.QWidget):
         self.needfullreplot = False
 
         self.curve = CurveItem()
-        self.curve.setColor(QtGui.QColor(Qt.Qt.red))
+        self.curve.setColor(QtGui.QColor(Qt.Qt.white))
         # gives a title to the curve for the legend
         self.curve.setTitle("Ch1")
         self.canvasWidget.attach(self.curve)
 
         self.curve2 = CurveItem()
-        self.curve2.setColor(QtGui.QColor(Qt.Qt.blue))
+        self.curve2.setColor(QtGui.QColor(255,80,80))
         # gives a title to the curve for the legend
         self.curve2.setTitle("Ch2")
         # self.curve2 will be attached when needed
@@ -264,6 +264,8 @@ class TimePlot(QtWidgets.QWidget):
             # enable the legend to discrimate between the two channels
             self.legendWidget.show()
             # the canvas reisze event will trigger a full replot
+            self.canvasWidget.detach(self.curve)
+            self.canvasWidget.attach(self.curve)
 
         if self.xmax != x[-1]:
             self.logger.info("timeplot : changing x max")

@@ -32,10 +32,10 @@ class LegendWidget(QtWidgets.QWidget):
 
         x0 = self.margin + self.lineLength + self.spacing
         y = self.margin + fm.height()
-        for item in self.canvasWidget.attachedItems:
+        for item in reversed(self.canvasWidget.attachedItems):
             painter.setPen(item.color())
             yl = y - fm.height() / 3
             painter.drawLine(self.margin, yl, self.margin + self.lineLength, yl)
-            painter.setPen(QtCore.Qt.black)
+            painter.setPen(QtCore.Qt.white)
             painter.drawText(x0, y, item.title())
             y += fm.height() * 2

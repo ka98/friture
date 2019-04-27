@@ -585,7 +585,7 @@ class GlCanvasWidget(QtWidgets.QOpenGLWidget):
         if self.ruler:
             w = self.width()
             h = self.height()
-            color = QtGui.QColor(Qt.Qt.black)
+            color = QtGui.QColor(Qt.Qt.white)
             self.ruler_data = np.array(
                 [[self.mousex, 0,               0, color.redF(), color.greenF(), color.blueF()],
                  [self.mousex, h,               0, color.redF(), color.greenF(), color.blueF()],

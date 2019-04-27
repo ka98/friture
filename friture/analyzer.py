@@ -28,7 +28,7 @@ import logging.handlers
 from PyQt5 import QtCore
 # specifically import from PyQt5.QtGui and QWidgets for startup time improvement :
 from PyQt5.QtWidgets import QMainWindow, QHBoxLayout, QApplication, QSplashScreen
-from PyQt5.QtGui import QPixmap, QSurfaceFormat
+from PyQt5.QtGui import QPixmap, QSurfaceFormat, QPalette, QColor
 import appdirs
 
 # importing friture.exceptionhandler also installs a temporary exception hook
@@ -323,6 +323,32 @@ def main():
             logger.error("Could not set the app model ID. If the plaftorm is older than Windows 7, this is normal.")
 
     app = QApplication(sys.argv)
+    #app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
+    app.setStyle("fusion")
+
+    darkPalette = QPalette()
+    darkPalette.setColor(QPalette.Window, QColor(53, 53, 53))
+    darkPalette.setColor(QPalette.WindowText, QtCore.Qt.white)
+    darkPalette.setColor(QPalette.Disabled, QPalette.WindowText, QColor(127, 127, 127))
+    darkPalette.setColor(QPalette.Base, QColor(42, 42, 42))
+    darkPalette.setColor(QPalette.AlternateBase, QColor(66, 66, 66))
+    darkPalette.setColor(QPalette.ToolTipBase, QtCore.Qt.white)
+    darkPalette.setColor(QPalette.ToolTipText, QtCore.Qt.white)
+    darkPalette.setColor(QPalette.Text, QtCore.Qt.white)
+    darkPalette.setColor(QPalette.Disabled, QPalette.Text, QColor(127, 127, 127))
+    darkPalette.setColor(QPalette.Dark, QColor(35, 35, 35))
+    darkPalette.setColor(QPalette.Shadow, QColor(20, 20, 20))
+    darkPalette.setColor(QPalette.Button, QColor(20, 20, 20))
+    darkPalette.setColor(QPalette.ButtonText, QtCore.Qt.white)
+    darkPalette.setColor(QPalette.Disabled, QPalette.ButtonText, QColor(127, 127, 127))
+    darkPalette.setColor(QPalette.BrightText, QtCore.Qt.red)
+    darkPalette.setColor(QPalette.Link, QColor(42, 130, 218))
+    darkPalette.setColor(QPalette.Highlight, QColor(42, 130, 218))
+    darkPalette.setColor(QPalette.Disabled, QPalette.Highlight, QColor(80, 80, 80))
+    darkPalette.setColor(QPalette.HighlightedText, QtCore.Qt.white)
+    darkPalette.setColor(QPalette.Disabled, QPalette.HighlightedText, QColor(127, 127, 127))
+
+    app.setPalette(darkPalette)
 
     if platform.system() == "Darwin":
         logger.info("Applying Mac OS-specific setup")

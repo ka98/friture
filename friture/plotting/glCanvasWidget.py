@@ -340,10 +340,10 @@ class GlCanvasWidget(QtWidgets.QOpenGLWidget):
         w = self.width()
         h = self.height()
         self.background_data = np.array(
-            [[0, h,   0, 0.85, 0.85, 0.85],
-             [w, h, 0, 0.85, 0.85, 0.85],
-             [0, h/2, 0, 1.0,  1.0,  1.0],
-             [w, h / 2, 0, 1.0, 1.0, 1.0]],
+            [[0, h,   0, 0, 0, 0],
+             [w, h, 0, 0, 0, 0],
+             [0, h/2, 0, 0,  0,  0],
+             [w, h / 2, 0, 0, 0, 0]],
             dtype=np.float32)
 
         self.background_vbo.set_array(self.background_data)
@@ -376,7 +376,7 @@ class GlCanvasWidget(QtWidgets.QOpenGLWidget):
         self.clearErrors()
 
         # Clear The Screen And The Depth Buffer
-        GL.glClearColor(1, 1, 1, 0)
+        GL.glClearColor(0, 0, 0, 0)
         GL.glClear(GL.GL_COLOR_BUFFER_BIT)  # | GL.GL_DEPTH_BUFFER_BIT)
 
         shaders.glUseProgram(self.quad_shader)

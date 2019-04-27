@@ -41,10 +41,12 @@ class CanvasBackground:
 
     def directDraw(self, painter, rect):
         # verical gradient from top to bottom
-        gradient = QtGui.QLinearGradient(rect.topLeft(), rect.bottomLeft())
-        gradient.setColorAt(0, QtGui.QColor("#E0E0E0"))
-        gradient.setColorAt(0.5, QtCore.Qt.white)
-        painter.fillRect(rect, gradient)
+        #gradient = QtGui.QLinearGradient(rect.topLeft(), rect.bottomLeft())
+        #gradient.setColorAt(0, QtGui.QColor("#E0E0E0"))
+        #gradient.setColorAt(0.5, QtCore.Qt.white)
+
+        # makes octave background black
+        painter.fillRect(rect, QtGui.QColor("#000000"))
 
     def draw(self, painter, rect):
         # update the cache according to possibly new canvas dimensions

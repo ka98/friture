@@ -64,7 +64,7 @@ class MeterScale(QtWidgets.QWidget):
             if fontmetrics.width(label) < scaleWidth - 5:
                 self.drawSegments(painter, currentY, scaleWidth)
 
-            # draw the text label (## dB)
+                        # draw the text label (## dB)
             painter.drawText(0, currentY - labelMidHeight, scaleWidth - 1, fontmetrics.height(),
                              QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter, label)
 
@@ -89,7 +89,7 @@ class MeterScale(QtWidgets.QWidget):
 
         self.lastY = 0
 
-        painter.setPen(self.palette().mid().color().darker(200))
+        painter.setPen(self.palette().mid().color().lighter(255))
 
         for dB in [0, -3, -6, -10, -20, -30, -40, -50, -60]:
             self.drawLineLabel(painter, self.meter.iec_scale(dB), str(abs(dB)))
@@ -262,7 +262,7 @@ class qsynthMeter(QtWidgets.QFrame):
         self.colors[self.Color6dB] = QtGui.QColor(160, 220, 20)
         self.colors[self.Color10dB] = QtGui.QColor(40, 160, 40)
         self.colors[self.ColorBack] = QtGui.QColor(20, 40, 20)
-        self.colors[self.ColorFore] = QtGui.QColor(80, 80, 80)
+        self.colors[self.ColorFore] = QtGui.QColor(255, 255, 255)
 
         self.setBackgroundRole(QtGui.QPalette.NoRole)
 

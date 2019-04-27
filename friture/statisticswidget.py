@@ -35,7 +35,7 @@ class StatisticsWidget(QtWidgets.QWidget):
 
         self.scrollAreaWidgetContents = QtWidgets.QWidget(self.stats_scrollarea)
         self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 87, 220))
-        self.scrollAreaWidgetContents.setStyleSheet("""QWidget { background: white }""")
+        self.scrollAreaWidgetContents.setStyleSheet("""QWidget { background: black }""")
         self.scrollAreaWidgetContents.setObjectName("stats_scrollAreaWidgetContents")
 
         self.LabelStats = QtWidgets.QLabel(self.scrollAreaWidgetContents)

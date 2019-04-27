@@ -254,7 +254,8 @@ class HistogramPeakBarItem:
         self.need_transform = False
         self.y_map = None
 
-        self.palette = [Qt.QColor(255, gb, gb) for gb in range(0, 256)]
+        # color for history peaks
+        self.palette = [Qt.QColor(gb + 30, 0, 0) for gb in range(0, 255)]
 
     def setData(self, fl, fh, peaks, peaks_int, y):
         if len(self.peaks) != len(peaks):
@@ -263,7 +264,7 @@ class HistogramPeakBarItem:
             self.need_transform = True
 
         self.peaks = peaks
-        self.palette_index = (255 * (1. - peaks_int)).astype(int)
+        self.palette_index = (255 * (peaks_int - 1.)).astype(int)
         self.y = array(y)
 
     def draw(self, painter, x_map, y_map, rect):

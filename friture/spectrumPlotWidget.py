@@ -50,9 +50,9 @@ class SpectrumPlotWidget(QtWidgets.QWidget):
         self.canvasWidget.setTrackerFormatter(lambda x, y: "%d Hz, %.1f dB" % (x, y))
         self.canvasWidget.resized.connect(self.canvasResized)
 
-        r_peak = lambda p: 1. + 0.*p
-        g_peak = lambda p: 1. - p
-        b_peak = lambda p: 1. - p
+        r_peak = lambda p: p +.117
+        g_peak = lambda p: 0.*p
+        b_peak = lambda p: 0.*p
 
         self.peakQuadsItem = QuadsItem(r_peak, g_peak, b_peak)
         self.canvasWidget.attach(self.peakQuadsItem)

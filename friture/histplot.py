@@ -197,7 +197,7 @@ class HistogramItem:
             pixmap = QtGui.QPixmap(boundary_rect.width(), boundary_rect.height())
             pixmap.fill(transparent_color)  # transparent background
             painter = QtGui.QPainter(pixmap)
-            painter.setPen(QtCore.Qt.black)
+            painter.setPen(QtCore.Qt.white)
             painter.drawText(boundary_rect, Qt.Qt.AlignLeft, f)
             labels_pixmaps_h_black += [pixmap]
 

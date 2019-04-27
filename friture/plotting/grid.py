@@ -63,15 +63,15 @@ class Grid:
 
         self.background.directDraw(painter, rect)
 
-        painter.setPen(QtGui.QPen(QtGui.QColor(QtCore.Qt.gray)))
+        painter.setPen(QtGui.QPen(QtGui.QColor(35,35,35)))
         for x in xMajorTick:
             painter.drawLine(x, 0, x, h)
 
-        painter.setPen(QtGui.QPen(QtGui.QColor(QtCore.Qt.lightGray)))
+        painter.setPen(QtGui.QPen(QtGui.QColor(50,50,50)))
         for x in xMinorTick:
             painter.drawLine(x, 0, x, h)
 
-        painter.setPen(QtGui.QPen(QtGui.QColor(QtCore.Qt.gray)))
+        painter.setPen(QtGui.QPen(QtGui.QColor(35,35,35)))
         for y in yMajorTick:
             painter.drawLine(0, y, w, y)
 

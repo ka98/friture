@@ -307,19 +307,19 @@ class GlCanvasWidget(QtWidgets.QOpenGLWidget):
 
         i = 0
 
-        color = QtGui.QColor(Qt.Qt.gray)
+        color = QtGui.QColor(35,35,35)
         for x in self.xMajorTick:
             self.grid_data[i,   :] = [x, 0, 0, color.redF(), color.greenF(), color.blueF()]
             self.grid_data[i+1, :] = [x, h, 0, color.redF(), color.greenF(), color.blueF()]
             i += 2
 
-        color = QtGui.QColor(Qt.Qt.lightGray)
+        color = QtGui.QColor(50,50,50)
         for x in self.xMinorTick:
             self.grid_data[i,   :] = [x, 0, 0, color.redF(), color.greenF(), color.blueF()]
             self.grid_data[i+1, :] = [x, h, 0, color.redF(), color.greenF(), color.blueF()]
             i += 2
 
-        color = QtGui.QColor(Qt.Qt.gray)
+        color = QtGui.QColor(35,35,35)
         for y in self.yMajorTick:
             self.grid_data[i,   :] = [0, y, 0, color.redF(), color.greenF(), color.blueF()]
             self.grid_data[i+1, :] = [w, y, 0, color.redF(), color.greenF(), color.blueF()]

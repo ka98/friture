@@ -21,6 +21,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 # Meter level limits (in dB).
+from colorThemes import ColorThemes
 MAXDB = +3.
 MINDB = -70.
 
@@ -89,7 +90,7 @@ class MeterScale(QtWidgets.QWidget):
 
         self.lastY = 0
 
-        painter.setPen(self.palette().mid().color().lighter(255))
+        painter.setPen(ColorThemes().text)
 
         for dB in [0, -3, -6, -10, -20, -30, -40, -50, -60]:
             self.drawLineLabel(painter, self.meter.iec_scale(dB), str(abs(dB)))

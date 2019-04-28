@@ -20,6 +20,7 @@
 from PyQt5 import QtCore, Qt, QtGui, QtWidgets
 from numpy import zeros, ones, log10, array
 import numpy as np
+from colorThemes import ColorThemes
 from friture.plotting.scaleWidget import VerticalScaleWidget, HorizontalScaleWidget
 from friture.plotting.scaleDivision import ScaleDivision
 from friture.plotting.coordinateTransform import CoordinateTransform
@@ -197,7 +198,7 @@ class HistogramItem:
             pixmap = QtGui.QPixmap(boundary_rect.width(), boundary_rect.height())
             pixmap.fill(transparent_color)  # transparent background
             painter = QtGui.QPainter(pixmap)
-            painter.setPen(QtCore.Qt.white)
+            painter.setPen(ColorThemes().octaveLabelText)
             painter.drawText(boundary_rect, Qt.Qt.AlignLeft, f)
             labels_pixmaps_h_black += [pixmap]
 
@@ -255,7 +256,7 @@ class HistogramPeakBarItem:
         self.y_map = None
 
         # color for history peaks
-        self.palette = [Qt.QColor(gb + 30, 0, 0) for gb in range(0, 255)]
+        self.palette = ColorThemes().octavePeakHistroy
 
     def setData(self, fl, fh, peaks, peaks_int, y):
         if len(self.peaks) != len(peaks):
@@ -264,7 +265,10 @@ class HistogramPeakBarItem:
             self.need_transform = True
 
         self.peaks = peaks
-        self.palette_index = (255 * (peaks_int - 1.)).astype(int)
+        if ColorThemes().darken == True:
+            self.palette_index = (255 * (peaks_int - 1.)).astype(int)
+        else:
+            self.palette_index = (255 * (1. - peaks_int)).astype(int)
         self.y = array(y)
 
     def draw(self, painter, x_map, y_map, rect):

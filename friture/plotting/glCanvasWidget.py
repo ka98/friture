@@ -5,6 +5,8 @@ from PyQt5 import QtCore, QtGui, Qt, QtWidgets
 import numpy as np
 import pyrr
 
+from colorThemes import ColorThemes
+
 try:
     from OpenGL import GL
 except ImportError:
@@ -307,19 +309,19 @@ class GlCanvasWidget(QtWidgets.QOpenGLWidget):
 
         i = 0
 
-        color = QtGui.QColor(35,35,35)
+        color = QtGui.QColor(ColorThemes().gridStrong)
         for x in self.xMajorTick:
             self.grid_data[i,   :] = [x, 0, 0, color.redF(), color.greenF(), color.blueF()]
             self.grid_data[i+1, :] = [x, h, 0, color.redF(), color.greenF(), color.blueF()]
             i += 2
 
-        color = QtGui.QColor(50,50,50)
+        color = QtGui.QColor(ColorThemes().gridWeak)
         for x in self.xMinorTick:
             self.grid_data[i,   :] = [x, 0, 0, color.redF(), color.greenF(), color.blueF()]
             self.grid_data[i+1, :] = [x, h, 0, color.redF(), color.greenF(), color.blueF()]
             i += 2
 
-        color = QtGui.QColor(35,35,35)
+        color = QtGui.QColor(ColorThemes().gridStrong)
         for y in self.yMajorTick:
             self.grid_data[i,   :] = [0, y, 0, color.redF(), color.greenF(), color.blueF()]
             self.grid_data[i+1, :] = [w, y, 0, color.redF(), color.greenF(), color.blueF()]
@@ -340,10 +342,10 @@ class GlCanvasWidget(QtWidgets.QOpenGLWidget):
         w = self.width()
         h = self.height()
         self.background_data = np.array(
-            [[0, h,   0, 0, 0, 0],
-             [w, h, 0, 0, 0, 0],
-             [0, h/2, 0, 0,  0,  0],
-             [w, h / 2, 0, 0, 0, 0]],
+            [[0, h,   0, ColorThemes().chartBackgroundUpperGradient2, ColorThemes().chartBackgroundUpperGradient2, ColorThemes().chartBackgroundUpperGradient2],
+             [w, h, 0, ColorThemes().chartBackgroundUpperGradient2, ColorThemes().chartBackgroundUpperGradient2, ColorThemes().chartBackgroundUpperGradient2],
+             [0, h/2, 0, ColorThemes().chartBackgroundLowerGradient2,  ColorThemes().chartBackgroundLowerGradient2,  ColorThemes().chartBackgroundLowerGradient2],
+             [w, h / 2, 0, ColorThemes().chartBackgroundLowerGradient2, ColorThemes().chartBackgroundLowerGradient2, ColorThemes().chartBackgroundLowerGradient2]],
             dtype=np.float32)
 
         self.background_vbo.set_array(self.background_data)
@@ -376,7 +378,7 @@ class GlCanvasWidget(QtWidgets.QOpenGLWidget):
         self.clearErrors()
 
         # Clear The Screen And The Depth Buffer
-        GL.glClearColor(0, 0, 0, 0)
+        GL.glClearColor(ColorThemes().chartBackgroundLowerGradient2, ColorThemes().chartBackgroundLowerGradient2, ColorThemes().chartBackgroundLowerGradient2, 0)
         GL.glClear(GL.GL_COLOR_BUFFER_BIT)  # | GL.GL_DEPTH_BUFFER_BIT)
 
         shaders.glUseProgram(self.quad_shader)
@@ -585,7 +587,7 @@ class GlCanvasWidget(QtWidgets.QOpenGLWidget):
         if self.ruler:
             w = self.width()
             h = self.height()
-            color = QtGui.QColor(Qt.Qt.white)
+            color = QtGui.QColor(ColorThemes().ruler)
             self.ruler_data = np.array(
                 [[self.mousex, 0,               0, color.redF(), color.greenF(), color.blueF()],
                  [self.mousex, h,               0, color.redF(), color.greenF(), color.blueF()],

@@ -1,4 +1,5 @@
 from PyQt5 import QtGui, QtCore, QtWidgets
+from colorThemes import ColorThemes
 
 # a widget for the items' legends
 
@@ -36,6 +37,6 @@ class LegendWidget(QtWidgets.QWidget):
             painter.setPen(item.color())
             yl = y - fm.height() / 3
             painter.drawLine(self.margin, yl, self.margin + self.lineLength, yl)
-            painter.setPen(QtCore.Qt.white)
+            painter.setPen(ColorThemes().text)
             painter.drawText(x0, y, item.title())
             y += fm.height() * 2

@@ -22,6 +22,7 @@ import logging
 
 from PyQt5 import Qt, QtGui, QtWidgets
 import numpy as np
+from colorThemes import ColorThemes
 from friture.plotting.scaleWidget import VerticalScaleWidget, HorizontalScaleWidget
 from friture.plotting.scaleDivision import ScaleDivision
 from friture.plotting.coordinateTransform import CoordinateTransform
@@ -158,13 +159,13 @@ class TimePlot(QtWidgets.QWidget):
         self.needfullreplot = False
 
         self.curve = CurveItem()
-        self.curve.setColor(QtGui.QColor(Qt.Qt.white))
+        self.curve.setColor(QtGui.QColor(ColorThemes().curve1))
         # gives a title to the curve for the legend
         self.curve.setTitle("Ch1")
         self.canvasWidget.attach(self.curve)
 
         self.curve2 = CurveItem()
-        self.curve2.setColor(QtGui.QColor(255,80,80))
+        self.curve2.setColor(QtGui.QColor(ColorThemes().curve2))
         # gives a title to the curve for the legend
         self.curve2.setTitle("Ch2")
         # self.curve2 will be attached when needed

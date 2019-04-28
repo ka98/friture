@@ -21,6 +21,7 @@ import sys
 import logging
 
 from PyQt5 import QtCore, QtWidgets
+from colorThemes import ColorThemes
 from friture.audiobackend import AudioBackend
 from friture.ui_settings import Ui_Settings_Dialog
 
@@ -62,6 +63,9 @@ class Settings_Dialog(QtWidgets.QDialog, Ui_Settings_Dialog):
             self.comboBox_firstChannel.addItem(channel)
             self.comboBox_secondChannel.addItem(channel)
 
+        themes = ["light", "dark"]
+        self.comboBox_applicationTheme.addItems(themes)
+
         current_device = AudioBackend().get_readable_current_device()
         self.comboBox_inputDevice.setCurrentIndex(current_device)
 
@@ -69,6 +73,8 @@ class Settings_Dialog(QtWidgets.QDialog, Ui_Settings_Dialog):
         self.comboBox_firstChannel.setCurrentIndex(first_channel)
         second_channel = AudioBackend().get_current_second_channel()
         self.comboBox_secondChannel.setCurrentIndex(second_channel)
+
+        self.comboBox_applicationTheme.setCurrentIndex(0)
 
         # signals
         self.comboBox_inputDevice.currentIndexChanged.connect(self.input_device_changed)
@@ -162,6 +168,22 @@ class Settings_Dialog(QtWidgets.QDialog, Ui_Settings_Dialog):
             AudioBackend().set_duo_input()
             self.logger.info("Switching to difference between two inputs")
 
+    def application_theme_changed(self, index):
+        #All the crazy shit in here
+        messageBox = QtWidgets.QMessageBox(self)
+        messageBox.setIcon(QtWidgets.QMessageBox.Information)
+        messageBox.setWindowTitle("Restart needed")
+        messageBox.setText("The application has to be restarted in order to apply the changes")
+        messageBox.exec()
+
+        if (index == 0):
+            ColorThemes().changeToLightTheme()
+        else :
+            ColorThemes().changeToDarkTheme()
+
+        self.parent().close()
+
+
     # method
     def saveState(self, settings):
         # for the input device, we search by name instead of index, since
@@ -170,6 +192,42 @@ class Settings_Dialog(QtWidgets.QDialog, Ui_Settings_Dialog):
         settings.setValue("firstChannel", self.comboBox_firstChannel.currentIndex())
         settings.setValue("secondChannel", self.comboBox_secondChannel.currentIndex())
         settings.setValue("duoInput", self.inputTypeButtonGroup.checkedId())
+        settings.setValue("applicationTheme", self.comboBox_applicationTheme.currentIndex())
+
+        settings.setValue("window", ColorThemes().window)
+        settings.setValue("windowText", ColorThemes().windowText)
+        settings.setValue("disabledWindowText", ColorThemes().disabledWindowText)
+        settings.setValue("base", ColorThemes().base)
+        settings.setValue("alternativeBase", ColorThemes().alternativeBase)
+        settings.setValue("toolTipBase", ColorThemes().toolTipBase)
+        settings.setValue("toolTipText", ColorThemes().toolTipText)
+        settings.setValue("text", ColorThemes().text)
+        settings.setValue("disabledText", ColorThemes().disabledText )
+        settings.setValue("dark", ColorThemes().dark)
+        settings.setValue("shadow", ColorThemes().shadow)
+        settings.setValue("button", ColorThemes().button)
+        settings.setValue("buttonText", ColorThemes().buttonText)
+        settings.setValue("disabledButtonText", ColorThemes().disabledButtonText )
+        settings.setValue("brightText", ColorThemes().brightText)
+        settings.setValue("link", ColorThemes().link)
+        settings.setValue("highlight", ColorThemes().highlight )
+        settings.setValue("disabledHighlight", ColorThemes().disabledHighlight)
+        settings.setValue("highlightedText", ColorThemes().highlightedText)
+        settings.setValue("disabledHighlighttedText", ColorThemes().disabledHighlighttedText)
+
+        settings.setValue("curve1", ColorThemes().curve1)
+        settings.setValue("curve2", ColorThemes().curve2)
+        settings.setValue("chartBackgroundUpperGradient1", ColorThemes().chartBackgroundUpperGradient1)
+        settings.setValue("chartBackgroundLowerGradient1", ColorThemes().chartBackgroundLowerGradient1)
+        settings.setValue("chartBackgroundUpperGradient2", ColorThemes().chartBackgroundUpperGradient2)
+        settings.setValue("chartBackgroundLowerGradient2", ColorThemes().chartBackgroundLowerGradient2)
+        settings.setValue("statisticsWindow", ColorThemes().statisticsWindow)
+        settings.setValue("ruler", ColorThemes().ruler)
+        settings.setValue("octaveLabelText", ColorThemes().octaveLabelText)
+        settings.setValue("gridStrong", ColorThemes().gridStrong)
+        settings.setValue("gridWeak", ColorThemes().gridWeak)
+        settings.setValue("octavePeakHistroy", ColorThemes().octavePeakHistroy)
+        settings.setValue("darken", ColorThemes().darken)
 
     # method
     def restoreState(self, settings):
@@ -184,3 +242,42 @@ class Settings_Dialog(QtWidgets.QDialog, Ui_Settings_Dialog):
             self.comboBox_secondChannel.setCurrentIndex(channel)
             duo_input_id = settings.value("duoInput", 0, type=int)
             self.inputTypeButtonGroup.button(duo_input_id).setChecked(True)
+        self.comboBox_applicationTheme.setCurrentIndex(settings.value("applicationTheme", 0, type=int))
+        self.comboBox_applicationTheme.currentIndexChanged.connect(self.application_theme_changed) # listen to changes after tbe inital value is set
+
+        ColorThemes().window = settings.value("window", None)
+        ColorThemes().windowText = settings.value("windowText", None)
+        ColorThemes().disabledWindowText = settings.value("disabledWindowText", None)
+        ColorThemes().base = settings.value("base", None)
+        ColorThemes().alternativeBase = settings.value("alternativeBase", None)
+        ColorThemes().toolTipBase = settings.value("toolTipBase", None)
+        ColorThemes().toolTipText = settings.value("toolTipText", None)
+        ColorThemes().text = settings.value("text", None)
+        ColorThemes().disabledText = settings.value("disabledText", None)
+        ColorThemes().dark = settings.value("dark", None)
+        ColorThemes().shadow = settings.value("shadow", None)
+        ColorThemes().button = settings.value("button", None)
+        ColorThemes().buttonText = settings.value("buttonText", None)
+        ColorThemes().disabledButtonText = settings.value("disabledButtonText", None)
+        ColorThemes().brightText = settings.value("brightText", None)
+        ColorThemes().link = settings.value("link", None)
+        ColorThemes().highlight = settings.value("highlight", None)
+        ColorThemes().disabledHighlight = settings.value("disabledHighlight", None)
+        ColorThemes().highlightedText = settings.value("highlightedText", None)
+        ColorThemes().disabledHighlighttedText = settings.value("disabledHighlighttedText", None)
+
+        ColorThemes().curve2 = settings.value("curve2", None)
+        ColorThemes().curve1 = settings.value("curve1", None)
+        ColorThemes().chartBackgroundUpperGradient1 = settings.value("chartBackgroundUpperGradient1", None)
+        ColorThemes().chartBackgroundLowerGradient1 = settings.value("chartBackgroundLowerGradient1", None)
+        ColorThemes().chartBackgroundUpperGradient2 = settings.value("chartBackgroundUpperGradient2", 0., type=float)
+        ColorThemes().chartBackgroundLowerGradient2 = settings.value("chartBackgroundLowerGradient2", 0., type=float)
+        ColorThemes().statisticsWindow = settings.value("statisticsWindow", "")
+        ColorThemes().ruler = settings.value("ruler", None)
+        ColorThemes().octaveLabelText = settings.value("octaveLabelText", None)
+        ColorThemes().gridStrong = settings.value("gridStrong", None)
+        ColorThemes().gridWeak = settings.value("gridWeak", None)
+        ColorThemes().octavePeakHistroy = settings.value("octavePeakHistroy", None)
+        ColorThemes().darken = settings.value("darken", True, type=bool)
+
+        ColorThemes().setPalette()

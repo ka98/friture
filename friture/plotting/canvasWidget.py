@@ -19,6 +19,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+from colorThemes import ColorThemes
 from .grid import Grid
 
 
@@ -153,7 +154,7 @@ class CanvasWidget(QtWidgets.QWidget):
         if self.ruler:
             w = self.width()
             h = self.height()
-            painter.setPen(QtGui.QPen(QtGui.QColor(QtCore.Qt.white)))
+            painter.setPen(QtGui.QPen(QtGui.QColor(ColorThemes().ruler)))
             painter.drawLine(self.mousex, 0, self.mousex, h)
             painter.drawLine(0, self.mousey, w, self.mousey)
 

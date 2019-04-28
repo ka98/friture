@@ -18,6 +18,7 @@
 # along with Friture.  If not, see <http://www.gnu.org/licenses/>.
 
 from PyQt5 import QtCore, QtGui
+from colorThemes import ColorThemes
 
 
 class CanvasBackground:
@@ -34,19 +35,13 @@ class CanvasBackground:
         w = rect.width()
         h = rect.height()
 
-        self.cache_pixmap = QtGui.QPixmap(w, h)
-
-        painter = QtGui.QPainter(self.cache_pixmap)
-        self.directDraw(painter, rect)
-
+        self.cache_pixmap = Q
     def directDraw(self, painter, rect):
         # verical gradient from top to bottom
-        #gradient = QtGui.QLinearGradient(rect.topLeft(), rect.bottomLeft())
-        #gradient.setColorAt(0, QtGui.QColor("#E0E0E0"))
-        #gradient.setColorAt(0.5, QtCore.Qt.white)
-
-        # makes octave background black
-        painter.fillRect(rect, QtGui.QColor("#000000"))
+        gradient = QtGui.QLinearGradient(rect.topLeft(), rect.bottomLeft())
+        gradient.setColorAt(0, ColorThemes().chartBackgroundUpperGradient1)
+        gradient.setColorAt(0.5, ColorThemes().chartBackgroundLowerGradient1)
+        painter.fillRect(rect, gradient)
 
     def draw(self, painter, rect):
         # update the cache according to possibly new canvas dimensions

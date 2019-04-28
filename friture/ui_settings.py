@@ -1,17 +1,14 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui\settings.ui'
+# Form implementation generated from reading ui file 'ui/settings.ui'
 #
-# Created: Sat Feb 14 20:44:20 2015
-#      by: PyQt5 UI code generator 5.4
+# Created by: PyQt5 UI code generator 5.10.1
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-
 class Ui_Settings_Dialog(object):
-
     def setupUi(self, Settings_Dialog):
         Settings_Dialog.setObjectName("Settings_Dialog")
         Settings_Dialog.resize(483, 275)
@@ -72,6 +69,12 @@ class Ui_Settings_Dialog(object):
         self.verticalLayout_4.addWidget(self.groupBox_second)
         self.horizontalLayout.addLayout(self.verticalLayout_4)
         self.verticalLayout_5.addLayout(self.horizontalLayout)
+        self.label_theme = QtWidgets.QLabel(Settings_Dialog)
+        self.label_theme.setObjectName("label_theme")
+        self.verticalLayout_5.addWidget(self.label_theme)
+        self.comboBox_applicationTheme = QtWidgets.QComboBox(Settings_Dialog)
+        self.comboBox_applicationTheme.setObjectName("comboBox_applicationTheme")
+        self.verticalLayout_5.addWidget(self.comboBox_applicationTheme)
 
         self.retranslateUi(Settings_Dialog)
         QtCore.QMetaObject.connectSlotsByName(Settings_Dialog)
@@ -85,5 +88,6 @@ class Ui_Settings_Dialog(object):
         self.radioButton_duo.setText(_translate("Settings_Dialog", "Two channels"))
         self.groupBox_first.setTitle(_translate("Settings_Dialog", "First channel"))
         self.groupBox_second.setTitle(_translate("Settings_Dialog", "Second channel"))
+        self.label_theme.setText(_translate("Settings_Dialog", "Select the Application Theme :"))
 
 from . import friture_rc

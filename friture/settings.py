@@ -21,6 +21,10 @@ import sys
 import logging
 
 from PyQt5 import QtCore, QtWidgets
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QPalette, QColor
+from PyQt5.QtWidgets import QApplication
+
 from colorThemes import ColorThemes
 from friture.audiobackend import AudioBackend
 from friture.ui_settings import Ui_Settings_Dialog
@@ -245,39 +249,41 @@ class Settings_Dialog(QtWidgets.QDialog, Ui_Settings_Dialog):
         self.comboBox_applicationTheme.setCurrentIndex(settings.value("applicationTheme", 0, type=int))
         self.comboBox_applicationTheme.currentIndexChanged.connect(self.application_theme_changed) # listen to changes after tbe inital value is set
 
-        ColorThemes().window = settings.value("window", None)
-        ColorThemes().windowText = settings.value("windowText", None)
-        ColorThemes().disabledWindowText = settings.value("disabledWindowText", None)
-        ColorThemes().base = settings.value("base", None)
-        ColorThemes().alternativeBase = settings.value("alternativeBase", None)
-        ColorThemes().toolTipBase = settings.value("toolTipBase", None)
-        ColorThemes().toolTipText = settings.value("toolTipText", None)
-        ColorThemes().text = settings.value("text", None)
-        ColorThemes().disabledText = settings.value("disabledText", None)
-        ColorThemes().dark = settings.value("dark", None)
-        ColorThemes().shadow = settings.value("shadow", None)
-        ColorThemes().button = settings.value("button", None)
-        ColorThemes().buttonText = settings.value("buttonText", None)
-        ColorThemes().disabledButtonText = settings.value("disabledButtonText", None)
-        ColorThemes().brightText = settings.value("brightText", None)
-        ColorThemes().link = settings.value("link", None)
-        ColorThemes().highlight = settings.value("highlight", None)
-        ColorThemes().disabledHighlight = settings.value("disabledHighlight", None)
-        ColorThemes().highlightedText = settings.value("highlightedText", None)
-        ColorThemes().disabledHighlighttedText = settings.value("disabledHighlighttedText", None)
+        palette = QApplication.style().standardPalette()
 
-        ColorThemes().curve2 = settings.value("curve2", None)
-        ColorThemes().curve1 = settings.value("curve1", None)
-        ColorThemes().chartBackgroundUpperGradient1 = settings.value("chartBackgroundUpperGradient1", None)
-        ColorThemes().chartBackgroundLowerGradient1 = settings.value("chartBackgroundLowerGradient1", None)
+        ColorThemes().window = settings.value("window", palette.color(QPalette.Window))
+        ColorThemes().windowText = settings.value("windowText", palette.color(QPalette.WindowText))
+        ColorThemes().disabledWindowText = settings.value("disabledWindowText", palette.color(QPalette.Disabled, QPalette.WindowText))
+        ColorThemes().base = settings.value("base", palette.color(QPalette.Base))
+        ColorThemes().alternativeBase = settings.value("alternativeBase", palette.color(QPalette.AlternateBase))
+        ColorThemes().toolTipBase = settings.value("toolTipBase", palette.color(QPalette.ToolTipBase))
+        ColorThemes().toolTipText = settings.value("toolTipText", palette.color(QPalette.ToolTipText))
+        ColorThemes().text = settings.value("text", palette.color(QPalette.Text))
+        ColorThemes().disabledText = settings.value("disabledText", palette.color(QPalette.Disabled, QPalette.Text))
+        ColorThemes().dark = palette.color(QPalette.Dark)
+        ColorThemes().shadow = settings.value("shadow", palette.color(QPalette.Shadow))
+        ColorThemes().button = settings.value("button", palette.color(QPalette.Button))
+        ColorThemes().buttonText = settings.value("buttonText", palette.color(QPalette.ButtonText))
+        ColorThemes().disabledButtonText = settings.value("disabledButtonText", palette.color(QPalette.Disabled, QPalette.ButtonText))
+        ColorThemes().brightText = settings.value("brightText", palette.color(QPalette.BrightText))
+        ColorThemes().link = settings.value("link", palette.color(QPalette.Link))
+        ColorThemes().highlight = settings.value("highlight", palette.color(QPalette.Highlight))
+        ColorThemes().disabledHighlight = settings.value("disabledHighlight", palette.color(QPalette.Disabled, QPalette.Highlight))
+        ColorThemes().highlightedText = settings.value("highlightedText", palette.color(QPalette.HighlightedText))
+        ColorThemes().disabledHighlighttedText = settings.value("disabledHighlighttedText", palette.color(QPalette.Disabled, QPalette.HighlightedText))
+
+        ColorThemes().curve2 = settings.value("curve2", QColor(255,0,0))
+        ColorThemes().curve1 = settings.value("curve1", QColor(0,0,255))
+        ColorThemes().chartBackgroundUpperGradient1 = settings.value("chartBackgroundUpperGradient1", QColor("#E0E0E0"))
+        ColorThemes().chartBackgroundLowerGradient1 = settings.value("chartBackgroundLowerGradient1", QColor("#FFFFFF"))
         ColorThemes().chartBackgroundUpperGradient2 = settings.value("chartBackgroundUpperGradient2", 0., type=float)
         ColorThemes().chartBackgroundLowerGradient2 = settings.value("chartBackgroundLowerGradient2", 0., type=float)
-        ColorThemes().statisticsWindow = settings.value("statisticsWindow", "")
-        ColorThemes().ruler = settings.value("ruler", None)
-        ColorThemes().octaveLabelText = settings.value("octaveLabelText", None)
-        ColorThemes().gridStrong = settings.value("gridStrong", None)
-        ColorThemes().gridWeak = settings.value("gridWeak", None)
-        ColorThemes().octavePeakHistroy = settings.value("octavePeakHistroy", None)
-        ColorThemes().darken = settings.value("darken", True, type=bool)
+        ColorThemes().statisticsWindow = settings.value("statisticsWindow", "white")
+        ColorThemes().ruler = settings.value("ruler", QColor(0,0,0))
+        ColorThemes().octaveLabelText = settings.value("octaveLabelText", QColor(0,0,0))
+        ColorThemes().gridStrong = settings.value("gridStrong", QColor(Qt.gray))
+        ColorThemes().gridWeak = settings.value("gridWeak", QColor(Qt.lightGray))
+        ColorThemes().octavePeakHistroy = settings.value("octavePeakHistroy", [QColor(255, gb, gb) for gb in range(0, 256)])
+        ColorThemes().darken = settings.value("darken", False, type=bool)
 
         ColorThemes().setPalette()

@@ -29,7 +29,9 @@ from friture.spectrum_settings import (Spectrum_Settings_Dialog,  # settings dia
                                        DEFAULT_SPEC_MAX,
                                        DEFAULT_WEIGHTING,
                                        DEFAULT_RESPONSE_TIME,
-                                       DEFAULT_SHOW_FREQ_LABELS)
+                                       DEFAULT_SHOW_FREQ_LABELS,
+                                       DEFAULT_SHOW_PEAKS,
+                                       DEFAULT_DRAWING_FILLED)
 
 from friture.audiobackend import SAMPLING_RATE
 from friture.spectrumPlotWidget import SpectrumPlotWidget
@@ -63,6 +65,8 @@ class Spectrum_Widget(QtWidgets.QWidget):
         self.weighting = DEFAULT_WEIGHTING
         self.dual_channels = False
         self.response_time = DEFAULT_RESPONSE_TIME
+        self.showPeaks = DEFAULT_SHOW_PEAKS
+        self.drawing_filled = DEFAULT_DRAWING_FILLED
 
         self.update_weighting()
         self.freq = self.proc.get_freq_scale()
@@ -79,9 +83,9 @@ class Spectrum_Widget(QtWidgets.QWidget):
         self.PlotZoneSpect.setfreqrange(self.minfreq, self.maxfreq)
         self.PlotZoneSpect.setspecrange(self.spec_min, self.spec_max)
         self.PlotZoneSpect.setweighting(self.weighting)
-        self.PlotZoneSpect.set_peaks_enabled(True)
-        self.PlotZoneSpect.set_baseline_displayUnits(0.)
         self.PlotZoneSpect.setShowFreqLabel(DEFAULT_SHOW_FREQ_LABELS)
+        self.PlotZoneSpect.set_peaks_enabled(DEFAULT_SHOW_PEAKS)
+        self.PlotZoneSpect.setDrawingMethod(DEFAULT_DRAWING_FILLED)
 
         # initialize the settings dialog
         self.settings_dialog = Spectrum_Settings_Dialog(self)
@@ -254,11 +258,22 @@ class Spectrum_Widget(QtWidgets.QWidget):
             self.PlotZoneSpect.set_peaks_enabled(False)
             self.PlotZoneSpect.set_baseline_dataUnits(0.)
         else:
-            self.PlotZoneSpect.set_peaks_enabled(True)
+            self.PlotZoneSpect.set_peaks_enabled(self.settings_dialog.checkBox_showPeaks.isChecked())
             self.PlotZoneSpect.set_baseline_displayUnits(0.)
 
     def setShowFreqLabel(self, showFreqLabel):
         self.PlotZoneSpect.setShowFreqLabel(showFreqLabel)
+
+    def setShowPeaks(self, showPeaks):
+        self.PlotZoneSpect.set_peaks_enabled(showPeaks)
+
+    def setdrawingmethod(self, drawFilled):
+        self.drawing_filled = drawFilled
+        self.PlotZoneSpect.setDrawingMethod(drawFilled)
+        if self.dual_channels:
+            self.PlotZoneSpect.set_baseline_dataUnits(0.)
+        else:
+            self.PlotZoneSpect.set_baseline_displayUnits(0.)
 
     def settings_called(self, checked):
         self.settings_dialog.show()

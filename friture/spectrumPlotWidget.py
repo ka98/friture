@@ -9,6 +9,7 @@ from friture.plotting.scaleDivision import ScaleDivision
 from friture.plotting.coordinateTransform import CoordinateTransform
 from friture.plotting.glCanvasWidget import GlCanvasWidget
 from friture.plotting.quadsItem import QuadsItem
+from timeplot import CurveItem
 
 from numpy import zeros, ones, log10, array
 import numpy as np
@@ -51,6 +52,8 @@ class SpectrumPlotWidget(QtWidgets.QWidget):
         self.canvasWidget.setTrackerFormatter(lambda x, y: "%d Hz, %.1f dB" % (x, y))
         self.canvasWidget.resized.connect(self.canvasResized)
 
+        self.drawing_filled = True
+
         if ColorThemes().darken == True :
             r_peak = lambda p: p +.117
             g_peak = lambda p: 0.*p
@@ -69,6 +72,17 @@ class SpectrumPlotWidget(QtWidgets.QWidget):
 
         self.quadsItem = QuadsItem(r_signal, g_signal, b_signal)
         self.canvasWidget.attach(self.quadsItem)
+
+
+        self.curve = CurveItem()
+        self.curve.setColor(ColorThemes().curve1)
+        self.curve.setTitle("Ch1")
+        self.canvasWidget.attach(self.curve)
+
+        self.curve2 = CurveItem()
+        self.curve2.setColor(ColorThemes().curve2)
+        self.curve2.setTitle("Peaks")
+        self.canvasWidget.attach(self.curve2)
 
         plotLayout = QtWidgets.QGridLayout()
         plotLayout.setSpacing(0)
@@ -136,19 +150,41 @@ class SpectrumPlotWidget(QtWidgets.QWidget):
     def setShowFreqLabel(self, showFreqLabel):
         self.canvasWidget.setShowFreqLabel(showFreqLabel)
 
+    def setDrawingMethod(self, drawFilled):
+        if drawFilled == True:
+            self.canvasWidget.detachAll()
+            if self.peaks_enabled:
+                self.canvasWidget.attach(self.peakQuadsItem)
+            self.canvasWidget.attach(self.quadsItem)
+        else:
+            self.canvasWidget.detachAll()
+            if self.peaks_enabled:
+                self.canvasWidget.attach(self.curve2)
+            self.canvasWidget.attach(self.curve)
+        self.drawing_filled = drawFilled
+
     def set_peaks_enabled(self, enabled):
         self.peaks_enabled = enabled
 
-        self.canvasWidget.detachAll()
-        if enabled:
-            self.canvasWidget.attach(self.peakQuadsItem)
-        self.canvasWidget.attach(self.quadsItem)
+        if self.drawing_filled:
+            self.canvasWidget.detachAll()
+            if enabled:
+                self.canvasWidget.attach(self.peakQuadsItem)
+            self.canvasWidget.attach(self.quadsItem)
+
+        else:
+            self.canvasWidget.detachAll()
+            if enabled:
+                self.canvasWidget.attach(self.curve2)
+            self.canvasWidget.attach(self.curve)
 
     def set_baseline_displayUnits(self, baseline):
-        self.quadsItem.set_baseline_displayUnits(baseline)
+        if self.drawing_filled == True:
+            self.quadsItem.set_baseline_displayUnits(baseline)
 
     def set_baseline_dataUnits(self, baseline):
-        self.quadsItem.set_baseline_dataUnits(baseline)
+        if self.drawing_filled == True:
+            self.quadsItem.set_baseline_dataUnits(baseline)
 
     def setdata(self, x, y, fmax):
         x1 = zeros(x.shape)
@@ -166,15 +202,23 @@ class SpectrumPlotWidget(QtWidgets.QWidget):
         if not self.paused:
             self.canvasWidget.setfmax(fmax)
 
-            M = max(y)
-            m = self.verticalScaleTransform.coord_min
-            y_int = (y-m)/(np.abs(M-m)+1e-3)
+            if self.drawing_filled == True:
+                M = max(y)
+                m = self.verticalScaleTransform.coord_min
+                y_int = (y-m)/(np.abs(M-m)+1e-3)
 
-            self.quadsItem.setData(x1, x2, y, y_int)
+                self.quadsItem.setData(x1, x2, y, y_int)
 
-            if self.peaks_enabled:
-                self.compute_peaks(y)
-                self.peakQuadsItem.setData(x1, x2, self.peak, self.peak_int)
+                if self.peaks_enabled:
+                    self.compute_peaks(y)
+                    self.peakQuadsItem.setData(x1, x2, self.peak, self.peak_int)
+
+            else:
+                self.curve.setData((self.x1 + self.x2) / 2, y)
+
+                if self.peaks_enabled:
+                    self.compute_peaks(y)
+                    self.curve2.setData((x1 + x2) / 2, self.peak)
 
     def draw(self):
         if self.needtransform:

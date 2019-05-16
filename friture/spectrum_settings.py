@@ -33,6 +33,9 @@ DEFAULT_WEIGHTING = 1  # A
 DEFAULT_SHOW_FREQ_LABELS = True
 DEFAULT_RESPONSE_TIME = 0.025
 DEFAULT_RESPONSE_TIME_INDEX = 0
+DEFAULT_SHOW_PEAKS = True
+DEFAULT_DRAWING_METHOD_INDEX = 0 #Filled
+DEFAULT_DRAWING_FILLED = True
 
 
 class Spectrum_Settings_Dialog(QtWidgets.QDialog):
@@ -124,6 +127,15 @@ class Spectrum_Settings_Dialog(QtWidgets.QDialog):
         self.checkBox_showFreqLabels.setObjectName("showFreqLabels")
         self.checkBox_showFreqLabels.setChecked(DEFAULT_SHOW_FREQ_LABELS)
 
+        self.checkBox_showPeaks = QtWidgets.QCheckBox(self)
+        self.checkBox_showPeaks.setObjectName("showPeaks")
+        self.checkBox_showPeaks.setChecked(DEFAULT_SHOW_PEAKS)
+
+        self.comboBox_drawing_method = QtWidgets.QComboBox(self)
+        self.comboBox_drawing_method.setObjectName("drawing_method")
+        self.comboBox_drawing_method.addItem("filled")
+        self.comboBox_drawing_method.addItem("outline")
+
         self.formLayout.addRow("Measurement type:", self.comboBox_dual_channel)
         self.formLayout.addRow("FFT Size:", self.comboBox_fftsize)
         self.formLayout.addRow("Frequency scale:", self.comboBox_freqscale)
@@ -134,6 +146,8 @@ class Spectrum_Settings_Dialog(QtWidgets.QDialog):
         self.formLayout.addRow("Middle-ear weighting:", self.comboBox_weighting)
         self.formLayout.addRow("Response time:", self.comboBox_response_time)
         self.formLayout.addRow("Display max-frequency label:", self.checkBox_showFreqLabels)
+        self.formLayout.addRow("Display peaks: ", self.checkBox_showPeaks)
+        self.formLayout.addRow("Drawing Method: ", self.comboBox_drawing_method)
 
         self.setLayout(self.formLayout)
 
@@ -147,13 +161,18 @@ class Spectrum_Settings_Dialog(QtWidgets.QDialog):
         self.comboBox_weighting.currentIndexChanged.connect(self.parent().setweighting)
         self.comboBox_response_time.currentIndexChanged.connect(self.responsetimechanged)
         self.checkBox_showFreqLabels.toggled.connect(self.parent().setShowFreqLabel)
+        self.checkBox_showPeaks.toggled.connect(self.parent().setShowPeaks)
+        self.comboBox_drawing_method.currentIndexChanged.connect(self.drawingmethodchanged)
 
     # slot
     def dualchannelchanged(self, index):
         if index == 0:
             self.parent().setdualchannels(False)
+            self.checkBox_showPeaks.setDisabled(False)
         else:
             self.parent().setdualchannels(True)
+            self.checkBox_showPeaks.setDisabled(True)
+
 
     # slot
     def fftsizechanged(self, index):
@@ -183,6 +202,17 @@ class Spectrum_Settings_Dialog(QtWidgets.QDialog):
         self.logger.info("responsetimechanged slot %d %d", index, response_time)
         self.parent().setresponsetime(response_time)
 
+    # slot
+    def drawingmethodchanged(self, index):
+        if index == 0:
+            draw_filled = True
+        else:
+            draw_filled = False
+
+        self.logger.info("drawingmethodchanged slot %d %d", index, draw_filled)
+        self.parent().setdrawingmethod(draw_filled)
+
+
     # method
     def saveState(self, settings):
         settings.setValue("fftSize", self.comboBox_fftsize.currentIndex())
@@ -194,6 +224,8 @@ class Spectrum_Settings_Dialog(QtWidgets.QDialog):
         settings.setValue("weighting", self.comboBox_weighting.currentIndex())
         settings.setValue("responseTime", self.comboBox_response_time.currentIndex())
         settings.setValue("showFreqLabels", self.checkBox_showFreqLabels.isChecked())
+        settings.setValue("showPeaks", self.checkBox_showPeaks.isChecked())
+        settings.setValue("drawingMethod", self.comboBox_drawing_method.currentIndex())
 
     # method
     def restoreState(self, settings):
@@ -215,3 +247,7 @@ class Spectrum_Settings_Dialog(QtWidgets.QDialog):
         self.comboBox_response_time.setCurrentIndex(responseTime)
         showFreqLabels = settings.value("showFreqLabels", DEFAULT_SHOW_FREQ_LABELS, type=bool)
         self.checkBox_showFreqLabels.setChecked(showFreqLabels)
+        showPeaks = settings.value("showPeaks", DEFAULT_SHOW_PEAKS, type=bool)
+        self.checkBox_showFreqLabels.setChecked(showPeaks)
+        drawingMethod = settings.value("drawingMethod", DEFAULT_DRAWING_METHOD_INDEX, type=int)
+        self.comboBox_drawing_method.setCurrentIndex(drawingMethod)
